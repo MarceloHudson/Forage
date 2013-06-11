@@ -30,8 +30,7 @@ public class AddFoodLocationServlet extends HttpServlet {
 	    @SuppressWarnings("deprecation")
 		Query query = new Query("FoodItem").addFilter("name", Query.FilterOperator.EQUAL, kind);
 	    Entity item = datastore.prepare(query).asSingleEntity();
-		Key parentKey = null;
-		parentKey = item.getKey();
+		Key parentKey = item.getKey();
 	
 		// create itemLocation entity with selected foodItem as parentKey 
 		Entity itemLocation = new Entity("Location", parentKey);
