@@ -86,6 +86,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/addfoodlocations</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>MapServlet</servlet-name>
+		<servlet-class>forage.MapServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MapServlet</servlet-name>
+		<url-pattern>/map</url-pattern>
+	</servlet-mapping>
+	
 	<security-constraint>
         <web-resource-collection>
             <url-pattern>/addfoodtypes.jsp/*</url-pattern>
@@ -96,6 +105,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
             <url-pattern>/addfooditems/*</url-pattern>
             <url-pattern>/addfoodlocations/*</url-pattern>
             <url-pattern>/addrecipe/*</url-pattern>
+            <url-pattern>/map/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
