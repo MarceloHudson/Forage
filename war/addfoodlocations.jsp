@@ -76,7 +76,7 @@
 	<%
 		} else {
 	%>
-	<p>Fruit Locations:</p>
+	<p>Fruit Items:</p>
 	<%
 		for (Entity f : items) {
 					pageContext.setAttribute("type_content",
@@ -96,7 +96,7 @@
 	<%
 		} else {
 	%>
-	<p>Vegetable Locations:</p>
+	<p>Vegetable Items:</p>
 	<%
 		for (Entity f : items1) {
 					pageContext.setAttribute("type_content1",
@@ -116,7 +116,7 @@
 	<%
 		} else {
 	%>
-	<p>Herb Locations:</p>
+	<p>Herb Items:</p>
 	<%
 		for (Entity f : items2) {
 					pageContext.setAttribute("type_content2",
