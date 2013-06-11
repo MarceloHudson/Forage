@@ -54,7 +54,7 @@
 	<%--  --%>
 
 
-	<form action="<%= blobstoreService.createUploadUrl("/testaddrecipe") %>" method="post" enctype="multipart/form-data">
+	<form action="<%= blobstoreService.createUploadUrl("/addrecipe") %>" method="post" enctype="multipart/form-data">
 		<p>Recipe name:</p>
 		<div>
 			<textarea name="name" rows="1" cols="40"></textarea>

@@ -51,7 +51,7 @@
 	<%--  --%>
 
 
-	<form action="/testaddfoodtypes" method="post">
+	<form action="/addfoodtypes" method="post">
 		<div>
 			<textarea name="type" rows="1" cols="40"></textarea>
 		</div>

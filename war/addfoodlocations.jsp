@@ -131,7 +131,7 @@
 		}
 	%>
 
-	<form action="/testaddfoodlocations" method="post">
+	<form action="/addfoodlocations" method="post">
 
 		<p>Food item:</p>
 		<div>

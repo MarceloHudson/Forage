@@ -25,9 +25,10 @@ public class AddFoodLocationServlet extends HttpServlet {
 	    String lng = req.getParameter("long");
 	    String health = req.getParameter("health");
 	    
-	    //query datastore for entity of kind. Should actually only return one entity.
+	    //query datastore for entity of kind FoodItem with name kind. Should actually only return one entity.
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-	    Query query = new Query(kind);
+	    @SuppressWarnings("deprecation")
+		Query query = new Query("FoodItem").addFilter("name", Query.FilterOperator.EQUAL, kind);
 	    Entity item = datastore.prepare(query).asSingleEntity();
 		Key parentKey = null;
 		parentKey = item.getKey();

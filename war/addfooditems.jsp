@@ -54,7 +54,7 @@
 	<%--  --%>
 
 
-	<form action="<%= blobstoreService.createUploadUrl("/testaddfooditems") %>" method="post" enctype="multipart/form-data">
+	<form action="<%= blobstoreService.createUploadUrl("/addfooditems") %>" method="post" enctype="multipart/form-data">
 		<%-- 
 		<div>
 		<select name="foodTypes">

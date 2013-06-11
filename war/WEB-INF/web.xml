@@ -93,17 +93,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>MapServlet</servlet-name>
 		<url-pattern>/map</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>"war/WEB-INF/web.xml"
 	
 	<security-constraint>
         <web-resource-collection>
             <url-pattern>/addfoodtypes.jsp/*</url-pattern>
             <url-pattern>/addfooditems.jsp/*</url-pattern>
-            <url-pattern>/addfoodlocations.jsp/*</url-pattern>
+            <!-- <url-pattern>/addfoodlocations.jsp/*</url-pattern>-->
             <url-pattern>/addrecipes.jsp/*</url-pattern>
             <url-pattern>/addfoodtypes/*</url-pattern>
             <url-pattern>/addfooditems/*</url-pattern>
-            <url-pattern>/addfoodlocations/*</url-pattern>
+            <!-- <url-pattern>/addfoodlocations/*</url-pattern>-->
             <url-pattern>/addrecipe/*</url-pattern>
             <url-pattern>/map/*</url-pattern>
         </web-resource-collection>
