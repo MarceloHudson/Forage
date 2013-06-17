@@ -28,16 +28,42 @@ public class MapServlet extends HttpServlet {
 				.getDatastoreService();
 		String maps = "";
 		BufferedReader reader = null;
-		Query locationQuery = new Query("Location");
+		Key parent = null;
+		// specify the food to search for
+		String food = req.getQueryString();
+		// query for the food item to be found
+		Query foodItem = new Query("FoodItem");
+		List<Entity> foodList = datastore.prepare(foodItem).asList(
+				FetchOptions.Builder.withLimit(50));
+
+		// go through the food list, and try to find parent entity
+		for (Entity e : foodList) {
+			if (e.getProperty("name").equals(food)) {
+				parent = e.getKey();
+				break;
+			}
+		}
+		// create a new query based on what food item is being searched
+		// if nothing found(or no parameters), return whole list of fooditems
+		Query locationQuery;
+		if (parent != null) {
+			locationQuery = new Query("Location").setAncestor(parent)
+					.addFilter(Entity.KEY_RESERVED_PROPERTY,
+							Query.FilterOperator.GREATER_THAN, parent);
+		} else {
+			locationQuery = new Query("Location");
+		}
 		List<Entity> items = datastore.prepare(locationQuery).asList(
 				FetchOptions.Builder.withLimit(15));
-		//create a string that contains all the marker locations
+
+		// create a string that contains all the marker locations
 		String markers = "";
 		for (Entity i : items) {
 			String lat = (String) i.getProperty("lat");
 			String lon = (String) i.getProperty("long");
 			String title = (String) i.getProperty("description");
-			markers += "placeMarker(" + lat +", " + lon + ", \"" + title+"\", info);";
+			markers += "placeMarker(" + lat + ", " + lon + ", \"" + title
+					+ "\", info);";
 		}
 		try {
 			resp.setContentType("text/html");
