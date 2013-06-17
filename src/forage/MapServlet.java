@@ -20,7 +20,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 public class MapServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		//hopefully this works
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		
 		//String maps = "";
 		//BufferedReader reader;
 		Entity loc;
