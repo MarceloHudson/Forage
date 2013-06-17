@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -13,48 +15,53 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class MapServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		//hopefully this works please!!!!!
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		
-		//String maps = "";
-		//BufferedReader reader;
-		Entity loc;
-		Key location = KeyFactory.createKey("Location", "Location");
-		try{
-		loc = datastore.get(location);
-		}catch(Exception e){
-			resp.setContentType("text/html");
-			resp.getWriter().println(
-					"<!DOCTYPE html><html><body>Entity Not Found</body></html>");
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		String maps = "";
+		BufferedReader reader = null;
+		Query locationQuery = new Query("Location");
+		List<Entity> items = datastore.prepare(locationQuery).asList(
+				FetchOptions.Builder.withLimit(15));
+		//create a string that contains all the marker locations
+		String markers = "";
+		for (Entity i : items) {
+			String lat = (String) i.getProperty("lat");
+			String lon = (String) i.getProperty("long");
+			String title = (String) i.getProperty("description");
+			markers += "placeMarker(" + lat +", " + lon + ", \"" + title+"\", info);";
 		}
-		/*
-		try{
+		try {
 			resp.setContentType("text/html");
-			ServletContext  s= this.getServletContext();
+			ServletContext s = this.getServletContext();
 			String path = s.getRealPath("mapcode.txt");
-		 reader = new BufferedReader(new InputStreamReader(
-				new FileInputStream(path), "UTF8"));
-		//req.getAttribute("type");
+			reader = new BufferedReader(new InputStreamReader(
+					new FileInputStream(path), "UTF8"));
 
-		maps = reader.readLine();
-		//get locations here format placeMarker(lon, lat, title, info) (dont change info) Also title is formatted as html
-		maps += reader.readLine();
-		
-		resp.getWriter().println(maps);
-		}catch(IOException e){
+			// req.getAttribute("type");
+
+			maps = reader.readLine();
+			// get locations here format placeMarker(lat, lon, title, info)
+			maps += markers;
+			// (dont change info) Also title is formatted as html
+			maps += reader.readLine();
+
+			resp.getWriter().println(maps);
+		} catch (IOException e) {
 			resp.setContentType("text/html");
-			resp.getWriter().println(
-					"<!DOCTYPE html><html><body>Error Reading Text</body></html>");
-		}
-		finally{
+			resp.getWriter()
+					.println(
+							"<!DOCTYPE html><html><body>Error Reading Text</body></html>");
+		} finally {
 			reader.close();
-		}*/
+		}
 	}
 }

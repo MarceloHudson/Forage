@@ -22,7 +22,6 @@ import com.google.appengine.api.datastore.Query;
 public class AddFoodItemsServlet extends HttpServlet {
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-	//joe
 		//get list of food types and return as list - uses foodKey to run ancestor query
 		String food = "food";
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
