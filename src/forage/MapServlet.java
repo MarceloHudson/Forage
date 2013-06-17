@@ -29,6 +29,7 @@ public class MapServlet extends HttpServlet {
 		.setAncestor(pKeys.get(0))
 		.addFilter(Entity.KEY_RESERVED_PROPERTY,
 				Query.FilterOperator.GREATER_THAN, pKeys.get(0));*/
+		//Joe is awesome
 		maps = reader.readLine();
 		//get locations here format placeMarker(lon, lat, title, info) (dont change info) Also title is formatted as html
 		maps += reader.readLine();
