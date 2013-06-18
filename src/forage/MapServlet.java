@@ -29,18 +29,23 @@ public class MapServlet extends HttpServlet {
 		String maps = "";
 		BufferedReader reader = null;
 		Key parent = null;
+
 		// specify the food to search for
-		String food = req.getQueryString();
+		String food = req.getParameter("food");
+
+		
 		// query for the food item to be found
 		Query foodItem = new Query("FoodItem");
 		List<Entity> foodList = datastore.prepare(foodItem).asList(
 				FetchOptions.Builder.withLimit(50));
 
 		// go through the food list, and try to find parent entity
-		for (Entity e : foodList) {
-			if (e.getProperty("name").equals(food)) {
-				parent = e.getKey();
-				break;
+		if (food != null) {
+			for (Entity e : foodList) {
+				if (e.getProperty("name").equals(food)) {
+					parent = e.getKey();
+					break;
+				}
 			}
 		}
 		// create a new query based on what food item is being searched
@@ -72,12 +77,8 @@ public class MapServlet extends HttpServlet {
 			reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(path), "UTF8"));
 
-			// req.getAttribute("type");
-
 			maps = reader.readLine();
-			// get locations here format placeMarker(lat, lon, title, info)
 			maps += markers;
-			// (dont change info) Also title is formatted as html
 			maps += reader.readLine();
 
 			resp.getWriter().println(maps);
