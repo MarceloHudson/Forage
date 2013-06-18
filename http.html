@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type = "text/javascript">
+    function httpGet(url)
+    {
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+    }
+	
+    function writeToBody(){
+
+    }
+</script>
+
+</head>
+
+<body>
+        <script type="text/javascript">
+         document.write(httpGet("http://foragemap.appspot.com/map.html"));
+	 document.write("hello");
+	</script>
+</body>
+
+</html>
