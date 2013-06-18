@@ -17,13 +17,7 @@ public class LoginServlet extends HttpServlet {
 	
 		public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 			User user = null;
-			try {
-			    OAuthService oauth = OAuthServiceFactory.getOAuthService();
-			    user = oauth.getCurrentUser();
-			    resp.getWriter().println("Authenticated: " + user.getEmail());
-			} catch (OAuthRequestException e) {
-			    resp.getWriter().println("Not authenticated: " + e.getMessage());
-			}
+		
 		    }
 		}
 
