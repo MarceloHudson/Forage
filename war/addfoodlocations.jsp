@@ -165,6 +165,12 @@
 			<textarea name="health" rows="1" cols="40"></textarea>
 
 		</div>
+		
+		<p>Verified (True of False):</p>
+		<div>
+			<textarea name="verified" rows="1" cols="40"></textarea>
+
+		</div>
 		<div>
 			<input type="submit" value="Add Food Location" />
 		</div>

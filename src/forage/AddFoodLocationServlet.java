@@ -24,6 +24,12 @@ public class AddFoodLocationServlet extends HttpServlet {
 	    String lat = req.getParameter("lat");
 	    String lng = req.getParameter("long");
 	    String health = req.getParameter("health");
+	    String verifiedS = req.getParameter("verified");
+	    boolean verified = false;
+	   
+	    if(verifiedS.equalsIgnoreCase("True")){
+	    	verified = true;
+	    }
 	    
 	    //query datastore for entity of kind FoodItem with name kind. Should actually only return one entity.
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -39,6 +45,7 @@ public class AddFoodLocationServlet extends HttpServlet {
 		itemLocation.setProperty("lat", lat);
 		itemLocation.setProperty("long", lng);
 		itemLocation.setProperty("health", health);
+		itemLocation.setProperty("verified", verified);
 		datastore.put(itemLocation);
 
 		// send back to jsp
