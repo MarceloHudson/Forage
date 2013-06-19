@@ -37,6 +37,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.oauth.OAuthService;
+import com.google.appengine.api.oauth.OAuthServiceFactory;
+import com.google.appengine.api.users.User;
 
 /**
  * This servlet serves Get requests from client apps for newly added locations. Returns XML
@@ -48,6 +52,17 @@ public class GetTypes extends HttpServlet{
 	private static final long serialVersionUID = 2550724501785758817L;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//OAUTH check
+		User user = null;
+		try {
+		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
+		    //checks for user with current authorisation
+		    user = oauth.getCurrentUser();
+		} catch (OAuthRequestException e) {
+		    resp.getWriter().println("Not authenticated: " + e.getMessage());
+		    return;
+		}
+		
 		//create key to run ancestor query on food types
 		String food = "food";
 		DatastoreService datastore = DatastoreServiceFactory
