@@ -74,9 +74,9 @@ public class MapServlet extends HttpServlet {
 			String title = (String) p.getProperty("name");
 			String health = (String) i.getProperty("health");
 			String description = (String) i.getProperty("description");
-			markers += "placeMarker(" + lat + ", " + lon + ", \"<div><p1>" + title
+			markers += "placeMarker(" + lat + ", " + lon + ", \"<p1>" + title
 					+ "</p1><br><br>" + description + "<br><br>Health: "
-					+ health + "/10</div>\", info);";
+					+ health + "/10\", info);";
 		}
 		try {
 			resp.setContentType("text/html");
