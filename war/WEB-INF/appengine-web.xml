@@ -10,7 +10,8 @@
 
   <static-files>
   <include path="/**.html" /> 
-   <include path="/**.txt" />    
+   <include path="/**.txt" />  
+      <include path="/**.png" />    
   </static-files>
   
   
