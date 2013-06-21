@@ -14,17 +14,19 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Text;
 
+@SuppressWarnings("serial")
 public class AddRecipeServlet extends HttpServlet {
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
 		//get parameters from from 
-		String recipe = "recipe";
-		String ingredients = req.getParameter("ing");
+		String recipe = "Recipe";
+		Text ingredients = new Text(req.getParameter("ing"));
 		String parentFood = req.getParameter("parentFood");
-		String description = req.getParameter("desc");
-		String instructions = req.getParameter("instruc");
+		Text instructions = new Text(req.getParameter("instruc"));
+		
 		String name = req.getParameter("name");
 		
 		//gets blob from blobstore to add to entity
@@ -39,8 +41,7 @@ public class AddRecipeServlet extends HttpServlet {
 		Key parentKey = item.getKey();
 		
 		//create recipe entity with the values entered on jsp as properties
-		Entity rec = new Entity("Recipe", parentKey);
-		rec.setProperty("respDescription", description);
+		Entity rec = new Entity(recipe, parentKey);
 		rec.setProperty("ingredients", ingredients);
 		rec.setProperty("instructions", instructions);
 		rec.setProperty("image", blobKey);

@@ -65,11 +65,6 @@
 			<textarea name="name" rows="1" cols="40"></textarea>
 		</div>
 		
-		<p>Recipe Description:</p>
-		<div>
-			<textarea name="desc" rows="5" cols="40"></textarea>
-		</div>
-		
 		<p>Ingredients:</p>
 		<div>
 			<textarea name="ing" rows="5" cols="40"></textarea>
