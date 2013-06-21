@@ -66,25 +66,47 @@ public class MapServlet extends HttpServlet {
 		// create a string that contains all the marker locations
 		String markers = "";
 		for (Entity i : allItems) {
+			// get key of the foodItem
 			Key par = i.getParent();
-			Entity p = null;
+			Entity foodItemEntity = null;
+			Entity foodTypeEntity = null;
 			try {
-				p = datastore.get(par);
+				// get the food item entity from the datastore
+				foodItemEntity = datastore.get(par);
+				// get the food items parent from the store
+				// This is so you can set the appropriate icon
+				Key typePar = foodItemEntity.getKey();
+				foodTypeEntity = datastore.get(typePar);
 			} catch (EntityNotFoundException e) {
 
 			}
 			String lat = (String) i.getProperty("lat");
 			String lon = (String) i.getProperty("long");
-			String title = (String) p.getProperty("name");
+			String title = (String) foodItemEntity.getProperty("name");
 			String health = (String) i.getProperty("health");
 			String visible = "false";
-			if(items.contains(i) || items.size()==0){
-				visible="true";
+			String iconType = "";
+			switch ((String) foodTypeEntity.getProperty("type")) {
+			case "Fruit":
+				iconType = "apple.png";
+				break;
+			case "Vegetable":
+				iconType = "orange.png";
+				break;
+			case "Herb":
+				iconType = "Untitled-5.png";
+				break;
+			default:
+				iconType = "apple.png";
+				break;
+			}
+			if (items.contains(i) || items.size() == 0) {
+				visible = "true";
 			}
 			String description = (String) i.getProperty("description");
 			markers += "placeMarker(" + lat + ", " + lon + ", \"<p1>" + title
 					+ "</p1><br><br>" + description + "<br><br>Health: "
-					+ health + "/10\","+ visible+");";
+					+ health + "/10\"," + visible + "," + iconType + ");";
 		}
 		try {
 			resp.setContentType("text/html");
