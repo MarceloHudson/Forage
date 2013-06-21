@@ -49,19 +49,23 @@ public class MapServlet extends HttpServlet {
 		// create a new query based on what food item is being searched
 		// if nothing found(or no parameters), return whole list of fooditems
 		Query locationQuery;
+		Query allItemQuery;
 		if (parent != null) {
 			locationQuery = new Query("Location").setAncestor(parent)
 					.addFilter(Entity.KEY_RESERVED_PROPERTY,
 							Query.FilterOperator.GREATER_THAN, parent);
+			allItemQuery = new Query("Location");
 		} else {
-			locationQuery = new Query("Location");
+			locationQuery = new Query("Null");
+			allItemQuery = new Query("Location");
 		}
 		List<Entity> items = datastore.prepare(locationQuery).asList(
 				FetchOptions.Builder.withLimit(50));
-
+		List<Entity> allItems = datastore.prepare(allItemQuery).asList(
+				FetchOptions.Builder.withLimit(50));
 		// create a string that contains all the marker locations
 		String markers = "";
-		for (Entity i : items) {
+		for (Entity i : allItems) {
 			Key par = i.getParent();
 			Entity p = null;
 			try {
@@ -73,10 +77,14 @@ public class MapServlet extends HttpServlet {
 			String lon = (String) i.getProperty("long");
 			String title = (String) p.getProperty("name");
 			String health = (String) i.getProperty("health");
+			String visible = "false";
+			if(items.contains(i) || items.size()==0){
+				visible="true";
+			}
 			String description = (String) i.getProperty("description");
 			markers += "placeMarker(" + lat + ", " + lon + ", \"<p1>" + title
 					+ "</p1><br><br>" + description + "<br><br>Health: "
-					+ health + "/10\", info);";
+					+ health + "/10\","+ visible+");";
 		}
 		try {
 			resp.setContentType("text/html");
