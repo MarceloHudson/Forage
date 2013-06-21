@@ -75,7 +75,7 @@ public class MapServlet extends HttpServlet {
 				foodItemEntity = datastore.get(par);
 				// get the food items parent from the store
 				// This is so you can set the appropriate icon
-				Key typePar = foodItemEntity.getKey();
+				Key typePar = foodItemEntity.getParent();
 				foodTypeEntity = datastore.get(typePar);
 			} catch (EntityNotFoundException e) {
 
@@ -88,16 +88,16 @@ public class MapServlet extends HttpServlet {
 			String iconType = "";
 			switch ((String) foodTypeEntity.getProperty("type")) {
 			case "Fruit":
-				iconType = "apple.png";
+				iconType = "red-shadow.png";
 				break;
 			case "Vegetable":
-				iconType = "orange.png";
+				iconType = "vege-dropshadow.png";
 				break;
 			case "Herb":
-				iconType = "Untitled-5.png";
+				iconType = "green-drop-shadow.png";
 				break;
 			default:
-				iconType = "apple.png";
+				iconType = "red-shadow.png";
 				break;
 			}
 			if (items.contains(i) || items.size() == 0) {
@@ -106,7 +106,7 @@ public class MapServlet extends HttpServlet {
 			String description = (String) i.getProperty("description");
 			markers += "placeMarker(" + lat + ", " + lon + ", \"<p1>" + title
 					+ "</p1><br><br>" + description + "<br><br>Health: "
-					+ health + "/10\"," + visible + "," + iconType + ");";
+					+ health + "/10\"," + visible + ",\"" + iconType + "\");";
 		}
 		try {
 			resp.setContentType("text/html");
