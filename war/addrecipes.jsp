@@ -55,6 +55,11 @@
 
 
 	<form action="<%= blobstoreService.createUploadUrl("/addrecipe") %>" method="post" enctype="multipart/form-data">
+		<p>Parent food name:</p>
+		<div>
+			<textarea name="parentFood" rows="1" cols="40"></textarea>
+		</div>
+		
 		<p>Recipe name:</p>
 		<div>
 			<textarea name="name" rows="1" cols="40"></textarea>

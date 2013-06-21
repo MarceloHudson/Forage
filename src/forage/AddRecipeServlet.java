@@ -13,15 +13,16 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query;
 
 public class AddRecipeServlet extends HttpServlet {
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		
-		//set parent reference to recipe 
+		//get parameters from from 
 		String recipe = "recipe";
-		Key recipeKey = KeyFactory.createKey("Recipe", recipe);
 		String ingredients = req.getParameter("ing");
+		String parentFood = req.getParameter("parentFood");
 		String description = req.getParameter("desc");
 		String instructions = req.getParameter("instruc");
 		String name = req.getParameter("name");
@@ -29,9 +30,16 @@ public class AddRecipeServlet extends HttpServlet {
 		//gets blob from blobstore to add to entity
 	    Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
         BlobKey blobKey = blobs.get("myFile");
+        
+        //query datastore for entity of kind FoodItem with name of the food entered in form. Should actually only return one entity.
+	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	    @SuppressWarnings("deprecation")
+		Query query = new Query("FoodItem").addFilter("name", Query.FilterOperator.EQUAL, parentFood);
+	    Entity item = datastore.prepare(query).asSingleEntity();
+		Key parentKey = item.getKey();
 		
 		//create recipe entity with the values entered on jsp as properties
-		Entity rec = new Entity("Recipe", recipeKey);
+		Entity rec = new Entity("Recipe", parentKey);
 		rec.setProperty("respDescription", description);
 		rec.setProperty("ingredients", ingredients);
 		rec.setProperty("instructions", instructions);
@@ -39,7 +47,6 @@ public class AddRecipeServlet extends HttpServlet {
 		rec.setProperty("name", name);
 		
 		//add to datastore
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		datastore.put(rec);
 
 		//send back to jsp
