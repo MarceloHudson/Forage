@@ -23,13 +23,11 @@
 	
 	<%
 	BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	String recipe = "recipe";
+	String recipe = "Recipe";
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Key recipeKey = KeyFactory.createKey("Recipe", recipe);
     
-    // Run an ancestor query to ensure we see the most up-to-date
-    // view of the FoodTypes belonging to Food.
-    Query query = new Query("Recipe", recipeKey);
+    // Run an kind query to ensure to see added recipes
+    Query query = new Query(recipe);
     List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(15));
     if (recipes.isEmpty()) {
         %>
