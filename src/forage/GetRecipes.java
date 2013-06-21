@@ -29,6 +29,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.images.Image;
 
 
@@ -74,18 +75,19 @@ public class GetRecipes extends HttpServlet {
 				
 				//ingredient node
 				Element ingred = doc.createElement("ingredients");
-				String itemIngr = (String) r.getProperty("ingredients");
+				Text tmp1 = (Text) r.getProperty("ingredients");
+				String itemIngr = tmp1.getValue();
 				ingred.appendChild(doc.createTextNode(itemIngr));
 				item.appendChild(ingred);
 				
 				//instructions node
 				Element instruct = doc.createElement("instructions");
-				String itemInstruct = (String) r.getProperty("instructions");
-				ingred.appendChild(doc.createTextNode(itemInstruct));
+				Text tmp2 =(Text) r.getProperty("instructions");
+				String itemInstruct = tmp2.getValue();
+				instruct.appendChild(doc.createTextNode(itemInstruct));
 				item.appendChild(instruct);
 				
 				//image node
-				
 				//getting an image byte stream and encoding it into a string able to be stored in XML
 			    BlobKey blobKey = (BlobKey) r.getProperty("image");
 			    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
@@ -94,7 +96,7 @@ public class GetRecipes extends HttpServlet {
 				
 				Element respImage = doc.createElement("image");
 				String itemImage = encodedImage;
-				ingred.appendChild(doc.createTextNode(itemImage));
+				respImage.appendChild(doc.createTextNode(itemImage));
 				item.appendChild(respImage);
 				
 		}
