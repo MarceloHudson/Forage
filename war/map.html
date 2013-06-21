@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0
+}
+
+#map-canvas {
+	height: 100%
+}
+
+@font-face {
+	font-family: 'bebas';
+	src: url('BEBAS___.ttf');
+}
+
+p1 {
+	font-family: bebas;
+	font-size: 125%;
+	text-align: center;
+}
+</style>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaHBlw_WRT-05PcRrj1P4LSspgSrQmHuk&sensor=true"></script>
+<script type="text/javascript" src="infobubble-compiled.js"></script>
+<script type="text/javascript" src="markerclusterer.js"></script>
+<script type="text/javascript" src="geolocationmarker.js"></script>
+
+<script type="text/javascript">
+	google.maps.visualRefresh = true;
+	var map, GeoMarker, mc, info, markerList, markerList2;
+	var markerState = false;
+	function initialize() {
+		var mapOptions = {
+			zoom : 14,
+			mapTypeId : google.maps.MapTypeId.SATELLITE,
+			panControl : false,
+			zoomControl : false
+		};
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+				mapOptions);
+		GeoMarker = new GeolocationMarker();
+		GeoMarker.setCircleOptions({
+			fillColor : '#808080'
+		});
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var pos = new google.maps.LatLng(position.coords.latitude,
+						position.coords.longitude);
+				map.setCenter(pos);
+			}, function() {
+				handleNoGeolocation(true);
+			});
+		} else {
+			handleNoGeolocation(false);
+		}
+		GeoMarker.setMap(map);
+		info = new InfoBubble({
+			maxWidth : 150,
+			shadowStyle : 0,
+			backgroundColor : 'rgba(255,255,255,0.85)'
+		});
+		markerList = [];
+		markerList2 = [];
+		var mcOptions = {
+			gridSize : 25,
+			maxZoom : 15,
+			styles : [ {
+				height : 33,
+				url : "white_circle.png",
+				width : 33
+			} ]
+		};
+
+		////////SPLIT HERE!!!  
+
+		mc = new MarkerClusterer(map, markerList2, mcOptions);
+		var img = document.createElement("IMG");
+		img.src = "white_circle.png";
+		var control = document.createElement('div');
+		control.style.paddingLeft = '5px';
+		control.style.paddingTop = '5px';
+		control.style.cursor = 'pointer';
+		control.appendChild(img);
+		google.maps.event.addDomListener(control, 'click', function() {
+			img.src = "black.png";
+			setTimeout(function() {
+				img.src = "white_circle.png";
+			}, 200);
+			var point = GeoMarker.getPosition();
+			map.panTo(point);
+		});
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(control);
+		var img2 = document.createElement("IMG");
+		img2.src = "white_circle.png";
+		var control2 = document.createElement('div');
+		control2.style.paddingLeft = '5px';
+		control2.style.paddingTop = '5px';
+		control2.style.cursor = 'pointer';
+		control2.appendChild(img2);
+		google.maps.event.addDomListener(control2, 'click', function() {
+			img2.src = "black.png";
+			setTimeout(function() {
+				img2.src = "white_circle.png";
+			}, 200);
+			mc.clearMarkers();
+			if (markerState == false) {
+				mc.addMarkers(markerList2);
+				markerState = true;
+			} else {
+				mc.addMarkers(markerList);
+				markerState = false;
+			}
+		});
+		map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control2);
+		mc.clearMarkers();
+		mc.addMarkers(markerList);
+	}
+	function handleNoGeolocation(errorFlag) {
+		if (errorFlag) {
+			var content = 'Error: The Geolocation service failed.';
+		} else {
+			var content = 'Error: Your browser doesn\'t support geolocation.';
+		}
+		var options = {
+			map : map,
+			position : new google.maps.LatLng(-41.2889, 174.7772),
+			content : content
+		};
+		map.setCenter(options.position);
+	}
+	function placeMarker(lat, lng, title, visible) {
+		var location = new google.maps.LatLng(lat, lng);
+		var markers = new google.maps.Marker({
+			position : location,
+			map : map,
+			title : title,
+			icon : "location-icons.png"
+		});
+		if (visible == true) {
+			markerList.push(markers);
+		}
+		markerList2.push(markers);
+		google.maps.event.addListener(markers, 'click', function() {
+			info.setContent(title);
+			info.open(map, markers);
+			map.panTo(markers.getPosition());
+		});
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body>
+	<div id="map-canvas" />
+</body>
+</html>
