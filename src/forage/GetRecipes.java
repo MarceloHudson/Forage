@@ -93,6 +93,7 @@ public class GetRecipes extends HttpServlet {
 			    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
 			    byte[] image = blobstoreService.fetchData(blobKey, 0, blobInfo.getSize());
 			    String encodedImage = Base64.encodeBase64String(image); // store this byte stream within the xml node
+			    
 				
 				Element respImage = doc.createElement("image");
 				String itemImage = encodedImage;
