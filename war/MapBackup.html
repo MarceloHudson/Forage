@@ -30,42 +30,33 @@ p1 {
 }
 
 p3 {
-	width: 100%;
+	width:100%;
 	font-family: bebas;
 	font-size: 200%;
 	text-align: center;
 }
 
-p3::selection {
-	background: transparent
-}
-
-div::selection {
-	background: transparent
-}
+p3::selection { background: transparent }
+div::selection { background: transparent }
 
 #align {
 	width: 150px;
 }
 
 ::-webkit-input-placeholder {
-	text-align: center;
+   text-align: center;
 }
 </style>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaHBlw_WRT-05PcRrj1P4LSspgSrQmHuk&sensor=true">
 	
 </script>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<script type="text/javascript" src="infobubble-compiled.js">
-</script>
+<script type="text/javascript" src="infobubble-compiled.js"></script>
 <script type="text/javascript" src="markerclusterer.js"></script>
 <script type="text/javascript" src="geolocationmarker.js">
 	
 </script>
 <script type="text/javascript">
-
 	google.maps.visualRefresh = true;
 	var map, GeoMarker, mc, info, markerList, markerList2;
 	var markerState = false;
@@ -115,49 +106,15 @@ div::selection {
 				width : 33
 			} ]
 		};
-		//split here
-
-		placeMarker(-41.316753, 174.792801,
-				"<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true,
-				"red-shadow.png");
-		placeMarker(-41.326591, 174.822647, "<p>Figs <br/>Health : 8/10</p>",
-				true, "red-shadow.png");
-		placeMarker(-41.301033, 174.782959, "<p>Olives <br/>Health : 7/10</p>",
-				true, "red-shadow.png");
-		placeMarker(-41.297287, 174.789353,
-				"<p>Walnut Tree<br/> Health : 4/10</p>", true, "red-shadow.png");
-		placeMarker(-41.308392, 174.777389, "<p>Apple <br/>Health : 2/10</p>",
-				false, "red-shadow.png");
-		placeMarker(-41.297337, 174.789353,
-				"<p>Cabbage Tree <br/>Health : 7/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.29928, 174.77826,
-				"<p>Elder Tree <br/>Health : 10/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.29794, 174.77736, "<p>Pear Tree<br/>Health : 7/10</p>",
-				false, "red-shadow.png");
-		placeMarker(-41.307598, 174.791653,
-				"<p>Kawakawa Tree<br/>Health : 5/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.317960, 174.787339,
-				"<p>Blackberries<br/>Health : 6/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.307653, 174.784835,
-				"<p>Blackberries<br/>Health : 8/10</p>", false,
-				"red-shadow.png");
-		//
-
 		mc = new MarkerClusterer(map, markerList2, mcOptions);
-
 		var img = document.createElement("IMG");
 		img.src = "buttonone.png";
-		var GPSControl = document.createElement('div');
-		GPSControl.style.paddingLeft = '5px';
-		GPSControl.style.paddingBottom = '40px';
-		GPSControl.style.cursor = 'pointer';
-		GPSControl.appendChild(img);
-
-		google.maps.event.addDomListener(GPSControl, 'click', function() {
+		var control = document.createElement('div');
+		control.style.paddingLeft = '5px';
+		control.style.paddingBottom = '40px';
+		control.style.cursor = 'pointer';
+		control.appendChild(img);
+		google.maps.event.addDomListener(control, 'click', function() {
 			img.src = "buttongrey.png";
 			setTimeout(function() {
 				img.src = "buttonone.png";
@@ -165,34 +122,30 @@ div::selection {
 			var point = GeoMarker.getPosition();
 			map.panTo(point);
 		});
-		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(GPSControl);
-
+		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(control);
 		var img2 = document.createElement("IMG");
 		img2.src = "buttonone.png";
-		var locationToggleControl = document.createElement('div');
-		locationToggleControl.style.paddingLeft = '5px';
-		locationToggleControl.style.paddingBottom = '40px';
-		locationToggleControl.style.cursor = 'pointer';
-		locationToggleControl.appendChild(img2);
+		var control2 = document.createElement('div');
+		control2.style.paddingLeft = '5px';
+		control2.style.paddingBottom = '40px';
+		control2.style.cursor = 'pointer';
+		control2.appendChild(img2);
 
-		google.maps.event.addDomListener(locationToggleControl, 'click',
-				function() {
-					img2.src = "buttongrey.png";
-					setTimeout(function() {
-						img2.src = "buttonone.png";
-					}, 200);
-					mc.clearMarkers();
-					if (markerState == false) {
-						mc.addMarkers(markerList2);
-						markerState = true;
-					} else {
-						mc.addMarkers(markerList);
-						markerState = false;
-					}
-				});
-		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
-				.push(locationToggleControl);
-
+		google.maps.event.addDomListener(control2, 'click', function() {
+			img2.src = "buttongrey.png";
+			setTimeout(function() {
+				img2.src = "buttonone.png";
+			}, 200);
+			mc.clearMarkers();
+			if (markerState == false) {
+				mc.addMarkers(markerList2);
+				markerState = true;
+			} else {
+				mc.addMarkers(markerList);
+				markerState = false;
+			}
+		});
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(control2);
 		mc.clearMarkers();
 		mc.addMarkers(markerList);
 
@@ -204,8 +157,7 @@ div::selection {
 		foodTypeInput.style.outline = "none";
 		foodTypeInput.style.border = "none";
 		foodTypeInput.style.margin = "7.5%";
-		foodTypeInput.placeholder = "Food Type";
-		//foodTypeInput.innerHTML = "";
+		foodTypeInput.placeholder="Food Type";
 
 		var descriptionInput = document.createElement("TEXTAREA");
 		descriptionInput.name = "descType";
@@ -218,33 +170,34 @@ div::selection {
 		descriptionInput.style.border = "none";
 		descriptionInput.style.margin = "7.5%";
 		descriptionInput.style.padding = "3%";
-		descriptionInput.placeholder = "Description";
+		descriptionInput.placeholder="Description";
 		descriptionInput.style.overflow = "hidden";
-
+		
+		
 		var healthInput = document.createElement("INPUT");
 		healthInput.name = "healthType";
 		healthInput.style.width = "79%";
 		healthInput.style.border = "none";
 		healthInput.style.outline = "none";
 		healthInput.style.margin = "7.5%";
-		healthInput.style.padding = "3%";
+		healthInput.style.padding= "3%";
 		healthInput.type = "text";
-		healthInput.placeholder = "Health";
-
-		var locationBox = document.createElement('div');
-		locationBox.style.paddingTop = '200px';
-		locationBox.style.width = "20%";
+		healthInput.placeholder="Health";
+		
+		var control3 = document.createElement('div');
+		control3.style.paddingTop = '200px';
+		control3.style.width = "20%";
 		var innerDiv = document.createElement('div');
-		innerDiv.innerHTML = "<p3>Add &nbsp;Location</p3>";
+		innerDiv.innerHTML="<p3>Add &nbsp;Location</p3>";
 		//this is weird. textalign will only work like this if i use set attribute,
 		// but background color doesn't work. hmmmmm...
-		innerDiv.setAttribute("style", "text-align:center;");
+		innerDiv.setAttribute("style","text-align:center;");
 		innerDiv.style.backgroundColor = 'rgba(255,255,255,0.75)';
 		innerDiv.appendChild(foodTypeInput);
 		innerDiv.appendChild(descriptionInput);
 		innerDiv.appendChild(healthInput);
-		locationBox.appendChild(innerDiv);
-		map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationBox);
+		control3.appendChild(innerDiv);
+		map.controls[google.maps.ControlPosition.TOP_CENTER].push(control3);
 
 		google.maps.event.addListener(map, 'click', function(event) {
 			httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
