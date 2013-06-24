@@ -138,7 +138,16 @@ select {
 		//split here
 
         placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
-
+        placeMarker(-41.326591, 174.822647, "<p>Figs <br/>Health : 8/10</p>",  true, "red-shadow.png"); 
+        placeMarker(-41.301033, 174.782959, "<p>Olives <br/>Health : 7/10</p>",  true, "red-shadow.png");         
+		placeMarker(-41.297287, 174.789353, "<p>Walnut Tree<br/> Health : 4/10</p>",  true, "red-shadow.png");  
+        placeMarker(-41.308392, 174.777389, "<p>Apple <br/>Health : 2/10</p>",  false, "red-shadow.png");    
+        placeMarker(-41.297337, 174.789353, "<p>Cabbage Tree <br/>Health : 7/10</p>", false, "red-shadow.png"); 
+        placeMarker(-41.29928, 174.77826, "<p>Elder Tree <br/>Health : 10/10</p>",  false, "red-shadow.png"); 
+        placeMarker(-41.29794, 174.77736, "<p>Pear Tree<br/>Health : 7/10</p>",  false, "red-shadow.png"); 
+        placeMarker(-41.307598, 174.791653, "<p>Kawakawa Tree<br/>Health : 5/10</p>", false, "red-shadow.png"); 
+        placeMarker(-41.317960, 174.787339, "<p>Blackberries<br/>Health : 6/10</p>", false, "red-shadow.png"); 
+        placeMarker(-41.307653, 174.784835, "<p>Blackberries<br/>Health : 8/10</p>", false, "red-shadow.png");
 		//
 
 		mc = new MarkerClusterer(map, markerList2, mcOptions);
@@ -151,7 +160,9 @@ select {
 		
 		*/
 		var img = document.createElement("IMG");
-		img.src = "geoDark.png";
+		img.src = "GeoDark.png";
+		img.style.width = '80px';
+		img.style.height = '45px';
 		var GPSControl = document.createElement('div');
 		GPSControl.style.paddingLeft = '5px';
 		GPSControl.style.paddingBottom = '40px';
@@ -159,9 +170,9 @@ select {
 		GPSControl.appendChild(img);
 
 		google.maps.event.addDomListener(GPSControl, 'click', function() {
-			img.src = "geoDark.png";
+			img.src = "GeoLight.png";
 			setTimeout(function() {
-				img.src = "geoDark.png";
+				img.src = "GeoDark.png";
 			}, 200);
 			var point = GeoMarker.getPosition();
 			map.panTo(point);
@@ -170,6 +181,8 @@ select {
 
 		var img2 = document.createElement("IMG");
 		img2.src = "showDark.png";
+		img2.style.width = '80px';
+		img2.style.height = '45px';
 		var locationToggleControl = document.createElement('div');
 		locationToggleControl.style.paddingLeft = '5px';
 		locationToggleControl.style.paddingBottom = '40px';
@@ -178,15 +191,13 @@ select {
 
 		google.maps.event.addDomListener(locationToggleControl, 'click',
 				function() {
-					img2.src = "showDark.png";
-					setTimeout(function() {
-						img2.src = "showDark.png";
-					}, 200);
 					mc.clearMarkers();
 					if (markerState == false) {
+						img2.src = "showLight.png";
 						mc.addMarkers(markerList2);
 						markerState = true;
 					} else {
+						img2.src = "showDark.png";
 						mc.addMarkers(markerList);
 						markerState = false;
 					}
