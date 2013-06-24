@@ -89,7 +89,7 @@ select {
 	var map, GeoMarker, mc, info, markerList, markerList2;
 	var markerState = false;
 	var mapState = false;
-	var addLocation = false;
+	var addLocationState = false;
 	function initialize() {
 		var mapOptions = {
 			zoom : 14,
@@ -132,9 +132,9 @@ select {
 			gridSize : 25,
 			maxZoom : 15,
 			styles : [ {
-				height : 31,
+				height : 30,
 				url : "cluster.png",
-				width : 33
+				width : 21
 			} ]
 		};
 		//split here
@@ -166,9 +166,8 @@ select {
 		img.style.width = '80px';
 		img.style.height = '45px';
 		var GPSControl = document.createElement('div');
-		GPSControl.style.paddingLeft = '5px';
-		GPSControl.style.paddingBottom = '40px';
 		GPSControl.style.cursor = 'pointer';
+		GPSControl.style.float = 'left';
 		GPSControl.appendChild(img);
 
 		google.maps.event.addDomListener(GPSControl, 'click', function() {
@@ -179,46 +178,55 @@ select {
 			var point = GeoMarker.getPosition();
 			map.panTo(point);
 		});
-		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(GPSControl);
+		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(GPSControl);
 		
 		var img3 = document.createElement("IMG");
 		img3.src = "locationDark.png";
 		img3.style.width = '80px';
 		img3.style.height = '45px';
 		var locationControl = document.createElement('div');
-		locationControl.style.paddingBottom = '40px';
 		locationControl.style.cursor = 'pointer';
+		locationControl.style.float = 'left';
 		locationControl.appendChild(img3);
 
 		google.maps.event.addDomListener(locationControl, 'click', function() {
-
+			if(addLocationState == false){
+				img3.src = "addLight.png";
+				addLocationState = true;
+			}
+			else if(addLocationState == true){
+				img3.src = "locationDark.png";
+				addLocationState = false;
+			}
 		});
-		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(locationControl);
+		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(locationControl);
 		/*
 		
 		for satellite
 		
 		*/
 		var img4 = document.createElement("IMG");
-		img4.src = "satDark.png";
+		img4.src = "mapDark.png";
 		img4.style.width = '80px';
 		img4.style.height = '45px';
 		var satControl = document.createElement('div');
-		satControl.style.paddingBottom = '40px';
 		satControl.style.cursor = 'pointer';
+		satControl.style.float = 'left';
 		satControl.appendChild(img4);
 
 		google.maps.event.addDomListener(satControl, 'click', function() {
 			if(mapState == false){
-				img4.src = "mapDark.png";
+				img4.src = "satDark.png";
 				map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+				mapState = true;
 			}
 			else if(mapState == true){
-				img4.src = "satDark.png";
-				map.setMapTypeId(google.maps.MapTypeId.SATTELITE);
+				img4.src = "mapDark.png";
+				map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+				mapState = false;
 			}
 		});
-		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(satControl);
+		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(satControl);
 
 		/*
 		
@@ -230,8 +238,8 @@ select {
 		img2.style.width = '80px';
 		img2.style.height = '45px';
 		var locationToggleControl = document.createElement('div');
-		locationToggleControl.style.paddingBottom = '40px';
 		locationToggleControl.style.cursor = 'pointer';
+		locationToggleControl.style.float = 'left';
 		locationToggleControl.appendChild(img2);
 
 		google.maps.event.addDomListener(locationToggleControl, 'click',
@@ -247,8 +255,16 @@ select {
 						markerState = false;
 					}
 				});
+		var buttonBox = document.createElement('div');
+		buttonBox.style.paddingBottom = '40px';
+		buttonBox.style.width = "100%";
+		buttonBox.appendChild(locationControl);
+		buttonBox.appendChild(GPSControl);
+		buttonBox.appendChild(locationToggleControl);
+		buttonBox.appendChild(satControl);
+
 		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
-				.push(locationToggleControl);
+			.push(buttonBox);
 		/*
 		
 			
