@@ -55,17 +55,19 @@ public class GetRecipes extends HttpServlet {
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    User user = null;
 	    
-	    //authorisation check
+	    //OAuth check
 		try {
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
-		    //checks for user with current authorisation
+		    //checks for user with current authorization
 		    user = oauth.getCurrentUser();
+		    resp.getWriter().println("Authenticated: " + user.getEmail());
+		    return;
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;
 		}
 		
-	    
+	    /*
 		Enumeration e = req.getParameterNames();
 		while(e.hasMoreElements()){
 			String val = (String)e.nextElement();
@@ -161,7 +163,7 @@ public class GetRecipes extends HttpServlet {
 		} else {
 			resp.setContentType("text/xml;charset=UTF-8");
 			resp.getWriter().println("null");
-		}
+		}*/
 	    
 	}
 
