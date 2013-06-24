@@ -137,40 +137,21 @@ select {
 		};
 		//split here
 
-		placeMarker(-41.316753, 174.792801,
-				"<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true,
-				"red-shadow.png");
-		placeMarker(-41.326591, 174.822647, "<p>Figs <br/>Health : 8/10</p>",
-				true, "red-shadow.png");
-		placeMarker(-41.301033, 174.782959, "<p>Olives <br/>Health : 7/10</p>",
-				true, "red-shadow.png");
-		placeMarker(-41.297287, 174.789353,
-				"<p>Walnut Tree<br/> Health : 4/10</p>", true, "red-shadow.png");
-		placeMarker(-41.308392, 174.777389, "<p>Apple <br/>Health : 2/10</p>",
-				false, "red-shadow.png");
-		placeMarker(-41.297337, 174.789353,
-				"<p>Cabbage Tree <br/>Health : 7/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.29928, 174.77826,
-				"<p>Elder Tree <br/>Health : 10/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.29794, 174.77736, "<p>Pear Tree<br/>Health : 7/10</p>",
-				false, "red-shadow.png");
-		placeMarker(-41.307598, 174.791653,
-				"<p>Kawakawa Tree<br/>Health : 5/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.317960, 174.787339,
-				"<p>Blackberries<br/>Health : 6/10</p>", false,
-				"red-shadow.png");
-		placeMarker(-41.307653, 174.784835,
-				"<p>Blackberries<br/>Health : 8/10</p>", false,
-				"red-shadow.png");
+        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+
 		//
 
 		mc = new MarkerClusterer(map, markerList2, mcOptions);
 
+		/*
+		These are for the buttons
+		
+		
+		
+		
+		*/
 		var img = document.createElement("IMG");
-		img.src = "buttonone.png";
+		img.src = "geoDark.png";
 		var GPSControl = document.createElement('div');
 		GPSControl.style.paddingLeft = '5px';
 		GPSControl.style.paddingBottom = '40px';
@@ -178,9 +159,9 @@ select {
 		GPSControl.appendChild(img);
 
 		google.maps.event.addDomListener(GPSControl, 'click', function() {
-			img.src = "buttongrey.png";
+			img.src = "geoDark.png";
 			setTimeout(function() {
-				img.src = "buttonone.png";
+				img.src = "geoDark.png";
 			}, 200);
 			var point = GeoMarker.getPosition();
 			map.panTo(point);
@@ -188,7 +169,7 @@ select {
 		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(GPSControl);
 
 		var img2 = document.createElement("IMG");
-		img2.src = "buttonone.png";
+		img2.src = "showDark.png";
 		var locationToggleControl = document.createElement('div');
 		locationToggleControl.style.paddingLeft = '5px';
 		locationToggleControl.style.paddingBottom = '40px';
@@ -197,9 +178,9 @@ select {
 
 		google.maps.event.addDomListener(locationToggleControl, 'click',
 				function() {
-					img2.src = "buttongrey.png";
+					img2.src = "showDark.png";
 					setTimeout(function() {
-						img2.src = "buttonone.png";
+						img2.src = "showDark.png";
 					}, 200);
 					mc.clearMarkers();
 					if (markerState == false) {
@@ -212,6 +193,13 @@ select {
 				});
 		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
 				.push(locationToggleControl);
+		/*
+		
+			
+		These were for the buttons
+		
+		
+		*/
 
 		mc.clearMarkers();
 		mc.addMarkers(markerList);
@@ -292,30 +280,19 @@ select {
 		overDiv.style.paddingTop = '40px';
 		overDiv.style.width = "100%";
 		overDiv.style.height = "100%";
-		//overDiv.style.background = "rgba(0,0,0,0.3)";
-		map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationBox);
+		overDiv.style.background = "rgba(0,0,0,0.3)";
+		//map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationBox);
 
 		google.maps.event.addListener(map, 'click', function(event) {
-			if (addLocation == false) {
+			/*if (addLocation == false) {
 				addLocation = true;
 				map.controls[google.maps.ControlPosition.TOP_LEFT]
 						.push(overDiv);
-				var opacity;
-				//fade in the div. fancy
-				while (opacity < 0.4) {
-					setTimeout(function() {
-						var background = "rgba(0,0,0," + opacity + ")";
-						overDiv.style.background = background;
-					}, 10);
-					opacity += 0.01;
-					map.controls[google.maps.ControlPosition.TOP_LEFT].push(overDiv);
-
-				}
 			} else if (addLocation == true) {
 				addLocation = false;
 				map.controls[google.maps.ControlPosition.TOP_LEFT].clear();
-			}
-			//httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
+			}*/
+			httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
 		});
 
 	}
@@ -333,12 +310,14 @@ select {
 		map.setCenter(options.position);
 	}
 	function placeMarker(lat, lng, title, visible, foodType) {
+		var myIcon = new google.maps.MarkerImage(foodType, null, null, null, new google.maps.Size(38,51));
 		var location = new google.maps.LatLng(lat, lng);
 		var markers = new google.maps.Marker({
 			position : location,
 			map : map,
 			title : title,
-			icon : foodType
+			icon : myIcon,
+			optimized: false
 		});
 		if (visible == true) {
 			markerList.push(markers);
