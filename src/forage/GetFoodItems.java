@@ -112,7 +112,7 @@ public class GetFoodItems extends HttpServlet{
 			} catch (TransformerException tfe) {
 				tfe.printStackTrace();
 			}	
-	}
+	}	
 		
 		
 }
