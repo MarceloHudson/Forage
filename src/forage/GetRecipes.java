@@ -48,7 +48,7 @@ import com.google.appengine.api.users.User;
  */
 @SuppressWarnings("serial")
 public class GetRecipes extends HttpServlet {
-	private List<String> vals = new ArrayList<String>();
+	//private List<String> vals = new ArrayList<String>();
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{ 
 		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		String recipe = "Recipe";
@@ -60,8 +60,8 @@ public class GetRecipes extends HttpServlet {
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
 		    //checks for user with current authorization
 		    user = oauth.getCurrentUser();
-		    resp.getWriter().println("Authenticated: " + user.getEmail());
-		    //return;
+		    // resp.getWriter().println("Authenticated: " + user.getEmail()); - this bungs up the servlet as writer is called again later
+		    																////could flush the buffer also
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;

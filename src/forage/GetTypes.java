@@ -58,14 +58,15 @@ public class GetTypes extends HttpServlet{
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
 		    //checks for user with current authorisation
 		    user = oauth.getCurrentUser();
-		    resp.getWriter().println("Authenticated: " + user.getEmail());
-		    return;
+		    //resp.getWriter().println("Authenticated: " + user.getEmail()); - this bungs up the servlet as writer is called again later 
+		    																//could flush the buffer also
+		    
 		} catch (Exception e) {
 		    resp.getWriter().println("Not authenticated: ");
 		    return;
 		}
 		
-		/*
+		
 		//create key to run ancestor query on food types
 		String food = "food";
 		DatastoreService datastore = DatastoreServiceFactory
@@ -113,7 +114,7 @@ public class GetTypes extends HttpServlet{
 				pce.printStackTrace();
 			  } catch (TransformerException tfe) {
 				tfe.printStackTrace();
-			  }*/
+			  }
 			}
 		
 	}
