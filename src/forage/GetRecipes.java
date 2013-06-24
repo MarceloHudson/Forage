@@ -1,6 +1,8 @@
 package forage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServlet;
@@ -31,6 +33,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.images.Image;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.oauth.OAuthService;
+import com.google.appengine.api.oauth.OAuthServiceFactory;
+import com.google.appengine.api.users.User;
 
 
 
@@ -42,15 +48,37 @@ import com.google.appengine.api.images.Image;
  */
 @SuppressWarnings("serial")
 public class GetRecipes extends HttpServlet {
-	
+	private List<String> vals = new ArrayList<String>();
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{ 
 		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		String recipe = "Recipe";
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	    User user = null;
 	    
+	    //authorisation check
+		try {
+		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
+		    //checks for user with current authorisation
+		    user = oauth.getCurrentUser();
+		} catch (OAuthRequestException e) {
+		    resp.getWriter().println("Not authenticated: " + e.getMessage());
+		    return;
+		}
+	    
+		Enumeration e = req.getParameterNames();
+		while(e.hasMoreElements()){
+			String val = (String)e.nextElement();
+			vals.add(val);
+			
+		}
+		
+		String value = req.getParameter(vals.get(0));
+		
 	    // Run an kind query to get a list of all of the recipes
 	    Query query = new Query(recipe);
 	    List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    
+	    if(recipes.size() != Integer.parseInt(value)){
 	    
 	    try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -93,6 +121,7 @@ public class GetRecipes extends HttpServlet {
 			    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
 			    byte[] image = blobstoreService.fetchData(blobKey, 0, blobInfo.getSize());
 			    String encodedImage = Base64.encodeBase64String(image); // store this byte stream within the xml node
+			    
 				
 				Element respImage = doc.createElement("image");
 				String itemImage = encodedImage;
@@ -117,6 +146,11 @@ public class GetRecipes extends HttpServlet {
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
 		}
+	    }
+	    else{
+	    	resp.setContentType("text/xml;charset=UTF-8");
+	    	resp.getWriter().println("null");
+	    }
 	    
 	    
 	}
