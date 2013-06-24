@@ -51,6 +51,18 @@ div::selection {
 ::-webkit-input-placeholder {
 	text-align: center;
 }
+
+select {
+	background: white;
+	line-height: 1;
+	border: 0;
+	text-align: center;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	-webkit-appearance: none;
+}
 </style>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaHBlw_WRT-05PcRrj1P4LSspgSrQmHuk&sensor=true">
@@ -58,14 +70,14 @@ div::selection {
 </script>
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<script type="text/javascript" src="infobubble-compiled.js">
+<script type="text/javascript" src="infobubble-compiled.js">
+	
 </script>
 <script type="text/javascript" src="markerclusterer.js"></script>
 <script type="text/javascript" src="geolocationmarker.js">
 	
 </script>
 <script type="text/javascript">
-
 	google.maps.visualRefresh = true;
 	var map, GeoMarker, mc, info, markerList, markerList2;
 	var markerState = false;
@@ -196,16 +208,38 @@ div::selection {
 		mc.clearMarkers();
 		mc.addMarkers(markerList);
 
-		var foodTypeInput = document.createElement("INPUT");
+		var foodTypeInput = document.createElement("SELECT");
+		foodTypeInput.options[foodTypeInput.options.length] = new Option(
+				'Fruit', 'Fruit');
+		foodTypeInput.options[foodTypeInput.options.length] = new Option(
+				'Vegetable', 'Vegetable');
+		foodTypeInput.options[foodTypeInput.options.length] = new Option(
+				'Herb', 'Herb');
 		foodTypeInput.name = "foodType";
 		foodTypeInput.type = "text";
-		foodTypeInput.style.width = "79%";
+		foodTypeInput.style.width = "85%";
 		foodTypeInput.style.padding = "3%";
 		foodTypeInput.style.outline = "none";
 		foodTypeInput.style.border = "none";
-		foodTypeInput.style.margin = "7.5%";
+		foodTypeInput.style.margin = "4%";
+		foodTypeInput.style.marginTop = "8%";
 		foodTypeInput.placeholder = "Food Type";
-		//foodTypeInput.innerHTML = "";
+
+		var foodItemInput = document.createElement("SELECT");
+		foodItemInput.options[foodItemInput.options.length] = new Option(
+				'CrabApple', 'Fruit');
+		foodItemInput.options[foodItemInput.options.length] = new Option(
+				'Apple', 'Vegetable');
+		foodItemInput.options[foodItemInput.options.length] = new Option(
+				'Rosemary', 'Herb');
+		foodItemInput.name = "foodItem";
+		foodItemInput.type = "text";
+		foodItemInput.style.width = "85%";
+		foodItemInput.style.padding = "3%";
+		foodItemInput.style.outline = "none";
+		foodItemInput.style.border = "none";
+		foodItemInput.style.margin = "4%";
+		foodItemInput.placeholder = "Food Item";
 
 		var descriptionInput = document.createElement("TEXTAREA");
 		descriptionInput.name = "descType";
@@ -216,7 +250,7 @@ div::selection {
 		descriptionInput.style.resize = "none";
 		descriptionInput.style.outline = "none";
 		descriptionInput.style.border = "none";
-		descriptionInput.style.margin = "7.5%";
+		descriptionInput.style.margin = "4%";
 		descriptionInput.style.padding = "3%";
 		descriptionInput.placeholder = "Description";
 		descriptionInput.style.overflow = "hidden";
@@ -226,14 +260,15 @@ div::selection {
 		healthInput.style.width = "79%";
 		healthInput.style.border = "none";
 		healthInput.style.outline = "none";
-		healthInput.style.margin = "7.5%";
+		healthInput.style.margin = "4%";
+		healthInput.style.marginBottom = "8%";
 		healthInput.style.padding = "3%";
 		healthInput.type = "text";
 		healthInput.placeholder = "Health";
 
 		var locationBox = document.createElement('div');
-		locationBox.style.paddingTop = '200px';
-		locationBox.style.width = "20%";
+		locationBox.style.paddingTop = '40px';
+		locationBox.style.width = "60%";
 		var innerDiv = document.createElement('div');
 		innerDiv.innerHTML = "<p3>Add &nbsp;Location</p3>";
 		//this is weird. textalign will only work like this if i use set attribute,
@@ -241,6 +276,7 @@ div::selection {
 		innerDiv.setAttribute("style", "text-align:center;");
 		innerDiv.style.backgroundColor = 'rgba(255,255,255,0.75)';
 		innerDiv.appendChild(foodTypeInput);
+		innerDiv.appendChild(foodItemInput);
 		innerDiv.appendChild(descriptionInput);
 		innerDiv.appendChild(healthInput);
 		locationBox.appendChild(innerDiv);
@@ -286,9 +322,14 @@ div::selection {
 	function httpPost(url, position) {
 		var xmlHttp = null;
 		xmlHttp = new XMLHttpRequest();
-		xmlHttp.open("GET", url, false);
-		xmlHttp.send(null);
-		placeMarker(position.lat(), position.lng(), xmlHttp.responseText, true,
+		xmlHttp.open("POST", url, false);
+		xmlHttp.setRequestHeader('Content-type',
+				'application/x-www-form-urlencoded');
+		var string = "kind=Rosemary&description=lotshere&name=rosy1&lat="
+				+ position.lat() + "&long=" + position.lng()
+				+ "&health=10&verified=true";
+		xmlHttp.send(string);
+		placeMarker(position.lat(), position.lng(), string, true,
 				"red-shadow.png");
 	}
 
