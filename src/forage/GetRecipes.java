@@ -61,27 +61,27 @@ public class GetRecipes extends HttpServlet {
 		    //checks for user with current authorization
 		    user = oauth.getCurrentUser();
 		    resp.getWriter().println("Authenticated: " + user.getEmail());
-		    return;
+		    //return;
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;
 		}
 		
-	    /*
-		Enumeration e = req.getParameterNames();
-		while(e.hasMoreElements()){
-			String val = (String)e.nextElement();
-			vals.add(val);
+	    
+	//	Enumeration e = req.getParameterNames();
+		//while(e.hasMoreElements()){
+			//String val = (String)e.nextElement();
+			//vals.add(val);
 			
-		}
+		//}
 		
-		String value = req.getParameter(vals.get(0));
+		//String value = req.getParameter(vals.get(0));
 		
 	    // Run an kind query to get a list of all of the recipes
 	    Query query = new Query(recipe);
 	    List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    
-	    if(recipes.size() != Integer.parseInt(value)){
+	   // if(recipes.size() != Integer.parseInt(value)){
 	    
 			try {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -160,10 +160,10 @@ public class GetRecipes extends HttpServlet {
 			} catch (TransformerException tfe) {
 				tfe.printStackTrace();
 			}
-		} else {
-			resp.setContentType("text/xml;charset=UTF-8");
-			resp.getWriter().println("null");
-		}*/
+		//} else {
+			//resp.setContentType("text/xml;charset=UTF-8");
+			//resp.getWriter().println("null");
+		//}
 	    
 	}
 
