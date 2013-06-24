@@ -88,6 +88,7 @@ select {
 	google.maps.visualRefresh = true;
 	var map, GeoMarker, mc, info, markerList, markerList2;
 	var markerState = false;
+	var mapState = false;
 	var addLocation = false;
 	function initialize() {
 		var mapOptions = {
@@ -95,6 +96,7 @@ select {
 			mapTypeId : google.maps.MapTypeId.SATELLITE,
 			panControl : false,
 			zoomControl : false,
+			mapTypeControl: false,
 			mapTypeControlOptions : {
 				style : google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
 				padding : "20px",
@@ -207,7 +209,14 @@ select {
 		satControl.appendChild(img4);
 
 		google.maps.event.addDomListener(satControl, 'click', function() {
-
+			if(mapState == false){
+				img4.src = "mapDark.png";
+				map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+			}
+			else if(mapState == true){
+				img4.src = "satDark.png";
+				map.setMapTypeId(google.maps.MapTypeId.SATTELITE);
+			}
 		});
 		map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(satControl);
 
