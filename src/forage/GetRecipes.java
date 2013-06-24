@@ -54,7 +54,7 @@ public class GetRecipes extends HttpServlet {
 		String recipe = "Recipe";
 	    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	    User user = null;
-	    /*
+	    
 	    //authorisation check
 		try {
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
@@ -63,7 +63,7 @@ public class GetRecipes extends HttpServlet {
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;
-		}*/
+		}
 	    
 		Enumeration e = req.getParameterNames();
 		while(e.hasMoreElements()){
