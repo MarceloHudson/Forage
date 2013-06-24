@@ -4,17 +4,17 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <style type="text/css">
 html {
-	height: 100%
+	height: 400px;
 }
 
 body {
-	height: 100%;
+	height: 400px;
 	margin: 0;
 	padding: 0
 }
 
 #map-canvas {
-	height: 100%;
+	height: 400px;
 	z-index: 10;
 }
 
@@ -151,122 +151,7 @@ select {
 
 		mc = new MarkerClusterer(map, markerList2, mcOptions);
 
-		/*
 		
-		
-		These are for the buttons
-				
-		
-		*/
-		var img = document.createElement("IMG");
-		img.src = "GeoDark.png";
-		img.style.width = '80px';
-		img.style.height = '45px';
-		var GPSControl = document.createElement('div');
-		GPSControl.style.cursor = 'pointer';
-		GPSControl.style.float = 'left';
-		GPSControl.appendChild(img);
-
-		google.maps.event.addDomListener(GPSControl, 'click', function() {
-			img.src = "GeoLight.png";
-			setTimeout(function() {
-				img.src = "GeoDark.png";
-			}, 200);
-			var point = GeoMarker.getPosition();
-			map.panTo(point);
-		});
-		
-		var img3 = document.createElement("IMG");
-		img3.src = "locationDark.png";
-		img3.style.width = '80px';
-		img3.style.height = '45px';
-		var locationControl = document.createElement('div');
-		locationControl.style.cursor = 'pointer';
-		locationControl.style.float = 'left';
-		locationControl.appendChild(img3);
-
-		google.maps.event.addDomListener(locationControl, 'click', function() {
-			if(addLocationState == false){
-				img3.src = "addLight.png";
-				addLocationState = true;
-			}
-			else if(addLocationState == true){
-				img3.src = "locationDark.png";
-				addLocationState = false;
-			}
-		});
-		/*
-		
-		for satellite
-		
-		*/
-		var img4 = document.createElement("IMG");
-		img4.src = "mapDark.png";
-		img4.style.width = '80px';
-		img4.style.height = '45px';
-		var satControl = document.createElement('div');
-		satControl.style.cursor = 'pointer';
-		satControl.style.float = 'left';
-		satControl.appendChild(img4);
-
-		google.maps.event.addDomListener(satControl, 'click', function() {
-			if(mapState == false){
-				img4.src = "satDark.png";
-				map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
-				mapState = true;
-			}
-			else if(mapState == true){
-				img4.src = "mapDark.png";
-				map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-				mapState = false;
-			}
-		});
-
-		/*
-		
-		showing locations
-		
-		*/
-		var img2 = document.createElement("IMG");
-		img2.src = "showDark2.png";
-		img2.style.width = '80px';
-		img2.style.height = '45px';
-		var locationToggleControl = document.createElement('div');
-		locationToggleControl.style.cursor = 'pointer';
-		locationToggleControl.style.float = 'left';
-		locationToggleControl.appendChild(img2);
-
-		google.maps.event.addDomListener(locationToggleControl, 'click',
-				function() {
-					mc.clearMarkers();
-					if (markerState == false) {
-						img2.src = "showLight.png";
-						mc.addMarkers(markerList2);
-						markerState = true;
-					} else {
-						img2.src = "showDark2.png";
-						mc.addMarkers(markerList);
-						markerState = false;
-					}
-				});
-		var buttonBox = document.createElement('div');
-		buttonBox.style.paddingBottom = '40px';
-		buttonBox.style.width = "100%";
-		buttonBox.appendChild(locationControl);
-		buttonBox.appendChild(GPSControl);
-		buttonBox.appendChild(locationToggleControl);
-		buttonBox.appendChild(satControl);
-
-		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
-			.push(buttonBox);
-		/*
-		
-			
-		These were for the buttons
-		
-		
-		*/
-
 		mc.clearMarkers();
 		mc.addMarkers(markerList);
 
@@ -347,19 +232,143 @@ select {
 		overDiv.style.width = "100%";
 		overDiv.style.height = "100%";
 		overDiv.style.background = "rgba(0,0,0,0.3)";
-		//map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationBox);
 
 		google.maps.event.addListener(map, 'click', function(event) {
-			/*if (addLocation == false) {
-				addLocation = true;
-				map.controls[google.maps.ControlPosition.TOP_LEFT]
-						.push(overDiv);
-			} else if (addLocation == true) {
-				addLocation = false;
-				map.controls[google.maps.ControlPosition.TOP_LEFT].clear();
-			}*/
+
 			httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
 		});
+		
+		/*
+		
+		
+		These are for the buttons
+				
+		
+		*/
+		var img = document.createElement("IMG");
+		img.src = "GeoDark.png";
+		img.style.width = '80px';
+		img.style.height = '45px';
+		var GPSControl = document.createElement('div');
+		GPSControl.style.cursor = 'pointer';
+		GPSControl.style.float = 'left';
+		GPSControl.appendChild(img);
+
+		google.maps.event.addDomListener(GPSControl, 'click', function() {
+			img.src = "GeoLight.png";
+			setTimeout(function() {
+				img.src = "GeoDark.png";
+			}, 200);
+			var point = GeoMarker.getPosition();
+			map.panTo(point);
+		});
+		/*
+		adding locations
+		*/
+		var img3 = document.createElement("IMG");
+		img3.src = "locationDark.png";
+		img3.style.width = '80px';
+		img3.style.height = '45px';
+		var locationControl = document.createElement('div');
+		locationControl.style.cursor = 'pointer';
+		locationControl.style.float = 'left';
+		locationControl.appendChild(img3);
+
+		google.maps.event.addDomListener(locationControl, 'click', function() {
+			/*if (addLocation == false) {
+			addLocation = true;
+			map.controls[google.maps.ControlPosition.TOP_LEFT]
+					.push(overDiv);
+		} else if (addLocation == true) {
+			addLocation = false;
+			map.controls[google.maps.ControlPosition.TOP_LEFT].clear();
+		}*/
+			
+			if(addLocationState == false){
+				img3.src = "addLight.png";
+				addLocationState = true;
+				map.controls[google.maps.ControlPosition.TOP_CENTER]
+				.push(locationBox);
+			}
+			else if(addLocationState == true){
+				img3.src = "locationDark.png";
+				addLocationState = false;
+				map.controls[google.maps.ControlPosition.TOP_CENTER]
+				.clear();
+			}
+		});
+		/*
+		
+		for satellite
+		
+		*/
+		var img4 = document.createElement("IMG");
+		img4.src = "mapDark.png";
+		img4.style.width = '80px';
+		img4.style.height = '45px';
+		var satControl = document.createElement('div');
+		satControl.style.cursor = 'pointer';
+		satControl.style.float = 'left';
+		satControl.appendChild(img4);
+
+		google.maps.event.addDomListener(satControl, 'click', function() {
+			if(mapState == false){
+				img4.src = "satDark.png";
+				map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+				mapState = true;
+			}
+			else if(mapState == true){
+				img4.src = "mapDark.png";
+				map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+				mapState = false;
+			}
+		});
+
+		/*
+		
+		showing locations
+		
+		*/
+		var img2 = document.createElement("IMG");
+		img2.src = "showDark2.png";
+		img2.style.width = '80px';
+		img2.style.height = '45px';
+		var locationToggleControl = document.createElement('div');
+		locationToggleControl.style.cursor = 'pointer';
+		locationToggleControl.style.float = 'left';
+		locationToggleControl.appendChild(img2);
+
+		google.maps.event.addDomListener(locationToggleControl, 'click',
+				function() {
+					mc.clearMarkers();
+					if (markerState == false) {
+						img2.src = "showLight.png";
+						mc.addMarkers(markerList2);
+						markerState = true;
+					} else {
+						img2.src = "showDark2.png";
+						mc.addMarkers(markerList);
+						markerState = false;
+					}
+				});
+		var buttonBox = document.createElement('div');
+		buttonBox.style.paddingBottom = '40px';
+		buttonBox.style.width = "100%";
+		buttonBox.appendChild(locationControl);
+		buttonBox.appendChild(GPSControl);
+		buttonBox.appendChild(locationToggleControl);
+		buttonBox.appendChild(satControl);
+
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM]
+			.push(buttonBox);
+		/*
+		
+			
+		These were for the buttons
+		
+		
+		*/
+
 
 	}
 	function handleNoGeolocation(errorFlag) {
