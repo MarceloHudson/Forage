@@ -88,6 +88,7 @@ select {
 	google.maps.visualRefresh = true;
 	var map, GeoMarker, mc, info, markerList, markerList2;
 	var markerState = false;
+	var addLocation = false;
 	function initialize() {
 		var mapOptions = {
 			zoom : 14,
@@ -287,10 +288,34 @@ select {
 		innerDiv.appendChild(descriptionInput);
 		innerDiv.appendChild(healthInput);
 		locationBox.appendChild(innerDiv);
+		var overDiv = document.createElement('div');
+		overDiv.style.paddingTop = '40px';
+		overDiv.style.width = "100%";
+		overDiv.style.height = "100%";
+		//overDiv.style.background = "rgba(0,0,0,0.3)";
 		map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationBox);
 
 		google.maps.event.addListener(map, 'click', function(event) {
-			httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
+			if (addLocation == false) {
+				addLocation = true;
+				map.controls[google.maps.ControlPosition.TOP_LEFT]
+						.push(overDiv);
+				var opacity;
+				//fade in the div. fancy
+				while (opacity < 0.4) {
+					setTimeout(function() {
+						var background = "rgba(0,0,0," + opacity + ")";
+						overDiv.style.background = background;
+					}, 10);
+					opacity += 0.01;
+					map.controls[google.maps.ControlPosition.TOP_LEFT].push(overDiv);
+
+				}
+			} else if (addLocation == true) {
+				addLocation = false;
+				map.controls[google.maps.ControlPosition.TOP_LEFT].clear();
+			}
+			//httpPost("http://seekandsavour.appspot.com/forage", event.latLng)
 		});
 
 	}
@@ -345,6 +370,5 @@ select {
 </head>
 <body>
 	<div id="map-canvas" />
-	<div id="cover">
 </body>
 </html>
