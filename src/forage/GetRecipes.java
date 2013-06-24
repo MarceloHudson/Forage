@@ -80,78 +80,87 @@ public class GetRecipes extends HttpServlet {
 	    
 	    if(recipes.size() != Integer.parseInt(value)){
 	    
-	    try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	 
-			// root elements
-			Document doc = docBuilder.newDocument();
-			Element rootElement = doc.createElement("recipe");
-			doc.appendChild(rootElement);
-			
-			//add entity properties as elements to xml
-			for(Entity r: recipes){
-				
-				Element item = doc.createElement("item");
-				rootElement.appendChild(item);
-				
-				//name node
-				Element name = doc.createElement("name");
-				String itemName = (String) r.getProperty("name");
-				name.appendChild(doc.createTextNode(itemName));
-				item.appendChild(name);
-				
-				//ingredient node
-				Element ingred = doc.createElement("ingredients");
-				Text tmp1 = (Text) r.getProperty("ingredients");
-				String itemIngr = tmp1.getValue();
-				ingred.appendChild(doc.createTextNode(itemIngr));
-				item.appendChild(ingred);
-				
-				//instructions node
-				Element instruct = doc.createElement("instructions");
-				Text tmp2 =(Text) r.getProperty("instructions");
-				String itemInstruct = tmp2.getValue();
-				instruct.appendChild(doc.createTextNode(itemInstruct));
-				item.appendChild(instruct);
-				
-				//image node
-				//getting an image byte stream and encoding it into a string able to be stored in XML
-			    BlobKey blobKey = (BlobKey) r.getProperty("image");
-			    BlobInfo blobInfo = new BlobInfoFactory().loadBlobInfo(blobKey);
-			    byte[] image = blobstoreService.fetchData(blobKey, 0, blobInfo.getSize());
-			    String encodedImage = Base64.encodeBase64String(image); // store this byte stream within the xml node
-			    
-				
-				Element respImage = doc.createElement("image");
-				String itemImage = encodedImage;
-				respImage.appendChild(doc.createTextNode(itemImage));
-				item.appendChild(respImage);
-				
-		}
-			
-			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			
-			// Output xml as http response
+			try {
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory
+						.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+				// root elements
+				Document doc = docBuilder.newDocument();
+				Element rootElement = doc.createElement("recipe");
+				doc.appendChild(rootElement);
+
+				// add entity properties as elements to xml
+				for (Entity r : recipes) {
+
+					Element item = doc.createElement("item");
+					rootElement.appendChild(item);
+
+					// name node
+					Element name = doc.createElement("name");
+					String itemName = (String) r.getProperty("name");
+					name.appendChild(doc.createTextNode(itemName));
+					item.appendChild(name);
+
+					// ingredient node
+					Element ingred = doc.createElement("ingredients");
+					Text tmp1 = (Text) r.getProperty("ingredients");
+					String itemIngr = tmp1.getValue();
+					ingred.appendChild(doc.createTextNode(itemIngr));
+					item.appendChild(ingred);
+
+					// instructions node
+					Element instruct = doc.createElement("instructions");
+					Text tmp2 = (Text) r.getProperty("instructions");
+					String itemInstruct = tmp2.getValue();
+					instruct.appendChild(doc.createTextNode(itemInstruct));
+					item.appendChild(instruct);
+
+					// image node
+					// getting an image byte stream and encoding it into a
+					// string able to be stored in XML
+					BlobKey blobKey = (BlobKey) r.getProperty("image");
+					BlobInfo blobInfo = new BlobInfoFactory()
+							.loadBlobInfo(blobKey);
+					byte[] image = blobstoreService.fetchData(blobKey, 0,
+							blobInfo.getSize());
+					String encodedImage = Base64.encodeBase64String(image); // store
+																			// this
+																			// byte
+																			// stream
+																			// within
+																			// the
+																			// xml
+																			// node
+
+					Element respImage = doc.createElement("image");
+					String itemImage = encodedImage;
+					respImage.appendChild(doc.createTextNode(itemImage));
+					item.appendChild(respImage);
+
+				}
+
+				// write the content into xml file
+				TransformerFactory transformerFactory = TransformerFactory
+						.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(doc);
+
+				// Output xml as http response
+				resp.setContentType("text/xml;charset=UTF-8");
+				StreamResult result = new StreamResult(resp.getOutputStream());
+
+				transformer.transform(source, result);
+
+			} catch (ParserConfigurationException pce) {
+				pce.printStackTrace();
+			} catch (TransformerException tfe) {
+				tfe.printStackTrace();
+			}
+		} else {
 			resp.setContentType("text/xml;charset=UTF-8");
-			StreamResult result = new StreamResult(resp.getOutputStream());
-	 
-			transformer.transform(source, result);
-	 
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
-		} catch (TransformerException tfe) {
-			tfe.printStackTrace();
+			resp.getWriter().println("null");
 		}
-	    }
-	    else{
-	    	resp.setContentType("text/xml;charset=UTF-8");
-	    	resp.getWriter().println("null");
-	    }
-	    
 	    
 	}
 
