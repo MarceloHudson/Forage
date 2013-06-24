@@ -57,7 +57,7 @@ public class GetTypes extends HttpServlet{
 		try {
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
 		    //checks for user with current authorisation
-		    user = oauth.getCurrentUser();
+		    user = oauth.getCurrentUser("https://seekandsavour.appspot.com");
 		    resp.getWriter().println("Authenticated: " + user.getEmail());
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
