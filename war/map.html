@@ -44,11 +44,11 @@ p3 {
 }
 
 p3::selection {
-	background: transparent
+	background: transparent;
 }
 
 div::selection {
-	background: transparent
+	background: transparent;
 }
 
 #align {
@@ -132,33 +132,30 @@ select {
 			gridSize : 25,
 			maxZoom : 15,
 			styles : [ {
-				height : 30,
-				url : "cluster.png",
-				width : 21
+				height : 70,
+				url : "clusterbig.png",
+				width : 71
 			} ]
 		};
 		//split here
 
-        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
-        placeMarker(-41.326591, 174.822647, "<p>Figs <br/>Health : 8/10</p>",  true, "red-shadow.png"); 
-        placeMarker(-41.301033, 174.782959, "<p>Olives <br/>Health : 7/10</p>",  true, "red-shadow.png");         
-		placeMarker(-41.297287, 174.789353, "<p>Walnut Tree<br/> Health : 4/10</p>",  true, "red-shadow.png");  
-        placeMarker(-41.308392, 174.777389, "<p>Apple <br/>Health : 2/10</p>",  false, "red-shadow.png");    
-        placeMarker(-41.297337, 174.789353, "<p>Cabbage Tree <br/>Health : 7/10</p>", false, "red-shadow.png"); 
-        placeMarker(-41.29928, 174.77826, "<p>Elder Tree <br/>Health : 10/10</p>",  false, "red-shadow.png"); 
-        placeMarker(-41.29794, 174.77736, "<p>Pear Tree<br/>Health : 7/10</p>",  false, "red-shadow.png"); 
-        placeMarker(-41.307598, 174.791653, "<p>Kawakawa Tree<br/>Health : 5/10</p>", false, "red-shadow.png"); 
-        placeMarker(-41.317960, 174.787339, "<p>Blackberries<br/>Health : 6/10</p>", false, "red-shadow.png"); 
-        placeMarker(-41.307653, 174.784835, "<p>Blackberries<br/>Health : 8/10</p>", false, "red-shadow.png");
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+ 	        placeMarker(-41.316753, 174.792801, "<div1><p>Crab Apples<div1><br/> Health : 7/10</p>", true, "red-shadow.png");  
+
 		//
 
 		mc = new MarkerClusterer(map, markerList2, mcOptions);
 
 		/*
+		
+		
 		These are for the buttons
-		
-		
-		
+				
 		
 		*/
 		var img = document.createElement("IMG");
@@ -178,7 +175,6 @@ select {
 			var point = GeoMarker.getPosition();
 			map.panTo(point);
 		});
-		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(GPSControl);
 		
 		var img3 = document.createElement("IMG");
 		img3.src = "locationDark.png";
@@ -199,7 +195,6 @@ select {
 				addLocationState = false;
 			}
 		});
-		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(locationControl);
 		/*
 		
 		for satellite
@@ -226,7 +221,6 @@ select {
 				mapState = false;
 			}
 		});
-		//map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(satControl);
 
 		/*
 		
