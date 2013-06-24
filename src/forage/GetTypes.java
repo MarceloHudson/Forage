@@ -60,7 +60,7 @@ public class GetTypes extends HttpServlet{
 		    user = oauth.getCurrentUser();
 		    resp.getWriter().println("Authenticated: " + user.getEmail());
 		} catch (Exception e) {
-		    resp.getWriter().println("Not authenticated: " + e.getStackTrace().toString());
+		    resp.getWriter().println("Not authenticated: ");
 		    return;
 		}
 		

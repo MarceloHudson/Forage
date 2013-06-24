@@ -64,6 +64,7 @@ public class GetRecipes extends HttpServlet {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;
 		}
+		
 	    
 		Enumeration e = req.getParameterNames();
 		while(e.hasMoreElements()){
