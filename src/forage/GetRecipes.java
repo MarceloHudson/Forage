@@ -82,7 +82,6 @@ public class GetRecipes extends HttpServlet {
 
 				// add entity properties as elements to xml
 				for(int i = Integer.parseInt(value); i < recipes.size();i++ ){
-				//for (Entity r : recipes) {
 
 					Element item = doc.createElement("item");
 					rootElement.appendChild(item);
