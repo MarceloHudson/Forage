@@ -42,7 +42,7 @@ import com.google.appengine.api.users.User;
  */
 @SuppressWarnings("serial")
 public class GetRecipes extends HttpServlet {
-	//private List<String> vals = new ArrayList<String>();
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{ 
 		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		String recipe = "Recipe";
