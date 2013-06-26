@@ -42,7 +42,7 @@ import com.google.appengine.api.users.User;
  */
 @SuppressWarnings("serial")
 public class GetRecipes extends HttpServlet {
-	//private List<String> vals = new ArrayList<String>();
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException{ 
 		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 		String recipe = "Recipe";
@@ -66,10 +66,32 @@ public class GetRecipes extends HttpServlet {
 	    // Run an kind query to get a list of all of the recipes
 	    Query query = new Query(recipe);
 	    List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
+	    List<String> appRecipes = new ArrayList<String>();
+	    List<Entity> updateRecipes = new ArrayList<Entity>();
+	    
+	   
 	    
 	    
 	    //if length parameter received does not equal length of recipe list on DS then send update
 	    if(recipes.size() != Integer.parseInt(value)){
+	    	
+	    	//get recipe names of recipes stored on app
+	    	for(int i = 0; i < Integer.parseInt(value); i++){
+	 	    	appRecipes.add(req.getParameter(Integer.toString(i)));
+	 	    }
+	    	
+	    	//grab recipes that aren't in names sent from app - use these for updates
+	    	for(int i = 0; i < recipes.size(); i++){
+	    		int count = 0;
+	    		for(int j = 0; j < appRecipes.size(); j++){
+	    			if(recipes.get(i).getProperty("name").equals(appRecipes.get(j))){
+	    				count++;
+	    			}
+	    		}
+	    		if(count == 0){
+	    			updateRecipes.add(recipes.get(i));
+	    		}
+	    	}
 	    
 			try {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -82,27 +104,27 @@ public class GetRecipes extends HttpServlet {
 				doc.appendChild(rootElement);
 
 				// add entity properties as elements to xml
-				//for(int i = Integer.parseInt(value); i < recipes.size();i++ ){
+				for(int i = 0; i < updateRecipes.size();i++ ){
 
 					Element item = doc.createElement("item");
 					rootElement.appendChild(item);
 
 					// name node
 					Element name = doc.createElement("name");
-					String itemName = (String) recipes.get(18).getProperty("name");
+					String itemName = (String) updateRecipes.get(i).getProperty("name");
 					name.appendChild(doc.createTextNode(itemName));
 					item.appendChild(name);
 
 					// ingredient node
 					Element ingred = doc.createElement("ingredients");
-					Text tmp1 = (Text) recipes.get(18).getProperty("ingredients");
+					Text tmp1 = (Text) updateRecipes.get(i).getProperty("ingredients");
 					String itemIngr = tmp1.getValue();
 					ingred.appendChild(doc.createTextNode(itemIngr));
 					item.appendChild(ingred);
 
 					// instructions node
 					Element instruct = doc.createElement("instructions");
-					Text tmp2 = (Text) recipes.get(18).getProperty("instructions");
+					Text tmp2 = (Text) updateRecipes.get(i).getProperty("instructions");
 					String itemInstruct = tmp2.getValue();
 					instruct.appendChild(doc.createTextNode(itemInstruct));
 					item.appendChild(instruct);
@@ -110,7 +132,7 @@ public class GetRecipes extends HttpServlet {
 					// image node
 					// getting an image byte stream and encoding it into a
 					// string able to be stored in XML
-					BlobKey blobKey = (BlobKey) recipes.get(18).getProperty("image");
+					BlobKey blobKey = (BlobKey) updateRecipes.get(i).getProperty("image");
 					BlobInfo blobInfo = new BlobInfoFactory()
 							.loadBlobInfo(blobKey);
 					byte[] image = blobstoreService.fetchData(blobKey, 0,
@@ -123,7 +145,7 @@ public class GetRecipes extends HttpServlet {
 					respImage.appendChild(doc.createTextNode(itemImage));
 					item.appendChild(respImage);
 
-				//}
+				}
 
 				// write the content into xml file
 				TransformerFactory transformerFactory = TransformerFactory
