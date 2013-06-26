@@ -67,6 +67,7 @@ public class GetRecipes extends HttpServlet {
 	    Query query = new Query(recipe);
 	    List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    
+	    
 	    //if length parameter received does not equal length of recipe list on DS then send update
 	    if(recipes.size() != Integer.parseInt(value)){
 	    
@@ -81,27 +82,27 @@ public class GetRecipes extends HttpServlet {
 				doc.appendChild(rootElement);
 
 				// add entity properties as elements to xml
-				for(int i = Integer.parseInt(value); i < recipes.size();i++ ){
+				//for(int i = Integer.parseInt(value); i < recipes.size();i++ ){
 
 					Element item = doc.createElement("item");
 					rootElement.appendChild(item);
 
 					// name node
 					Element name = doc.createElement("name");
-					String itemName = (String) recipes.get(i).getProperty("name");
+					String itemName = (String) recipes.get(18).getProperty("name");
 					name.appendChild(doc.createTextNode(itemName));
 					item.appendChild(name);
 
 					// ingredient node
 					Element ingred = doc.createElement("ingredients");
-					Text tmp1 = (Text) recipes.get(i).getProperty("ingredients");
+					Text tmp1 = (Text) recipes.get(18).getProperty("ingredients");
 					String itemIngr = tmp1.getValue();
 					ingred.appendChild(doc.createTextNode(itemIngr));
 					item.appendChild(ingred);
 
 					// instructions node
 					Element instruct = doc.createElement("instructions");
-					Text tmp2 = (Text) recipes.get(i).getProperty("instructions");
+					Text tmp2 = (Text) recipes.get(18).getProperty("instructions");
 					String itemInstruct = tmp2.getValue();
 					instruct.appendChild(doc.createTextNode(itemInstruct));
 					item.appendChild(instruct);
@@ -109,7 +110,7 @@ public class GetRecipes extends HttpServlet {
 					// image node
 					// getting an image byte stream and encoding it into a
 					// string able to be stored in XML
-					BlobKey blobKey = (BlobKey) recipes.get(i).getProperty("image");
+					BlobKey blobKey = (BlobKey) recipes.get(18).getProperty("image");
 					BlobInfo blobInfo = new BlobInfoFactory()
 							.loadBlobInfo(blobKey);
 					byte[] image = blobstoreService.fetchData(blobKey, 0,
@@ -122,7 +123,7 @@ public class GetRecipes extends HttpServlet {
 					respImage.appendChild(doc.createTextNode(itemImage));
 					item.appendChild(respImage);
 
-				}
+				//}
 
 				// write the content into xml file
 				TransformerFactory transformerFactory = TransformerFactory
