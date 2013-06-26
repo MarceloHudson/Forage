@@ -54,28 +54,21 @@ public class GetRecipes extends HttpServlet {
 		    OAuthService oauth = OAuthServiceFactory.getOAuthService();
 		    //checks for user with current authorization
 		    user = oauth.getCurrentUser();
-		    // resp.getWriter().println("Authenticated: " + user.getEmail()); - this bungs up the servlet as writer is called again later
-		    																////could flush the buffer also
+		    //resp.getWriter().println("Authenticated: " + user.getEmail());
+		   // resp.getWriter().close();										
 		} catch (OAuthRequestException e) {
 		    resp.getWriter().println("Not authenticated: " + e.getMessage());
 		    return;
 		}
 		
-	    
-	//	Enumeration e = req.getParameterNames();
-		//while(e.hasMoreElements()){
-			//String val = (String)e.nextElement();
-			//vals.add(val);
-			
-		//}
-		
-		//String value = req.getParameter(vals.get(0));
+		String value = req.getParameter("length");
 		
 	    // Run an kind query to get a list of all of the recipes
 	    Query query = new Query(recipe);
 	    List<Entity> recipes = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(100));
 	    
-	   // if(recipes.size() != Integer.parseInt(value)){
+	    //if length parameter received does not equal length of recipe list on DS then send update
+	    if(recipes.size() != Integer.parseInt(value)){
 	    
 			try {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -88,27 +81,28 @@ public class GetRecipes extends HttpServlet {
 				doc.appendChild(rootElement);
 
 				// add entity properties as elements to xml
-				for (Entity r : recipes) {
+				for(int i = Integer.parseInt(value); i < recipes.size();i++ ){
+				//for (Entity r : recipes) {
 
 					Element item = doc.createElement("item");
 					rootElement.appendChild(item);
 
 					// name node
 					Element name = doc.createElement("name");
-					String itemName = (String) r.getProperty("name");
+					String itemName = (String) recipes.get(i).getProperty("name");
 					name.appendChild(doc.createTextNode(itemName));
 					item.appendChild(name);
 
 					// ingredient node
 					Element ingred = doc.createElement("ingredients");
-					Text tmp1 = (Text) r.getProperty("ingredients");
+					Text tmp1 = (Text) recipes.get(i).getProperty("ingredients");
 					String itemIngr = tmp1.getValue();
 					ingred.appendChild(doc.createTextNode(itemIngr));
 					item.appendChild(ingred);
 
 					// instructions node
 					Element instruct = doc.createElement("instructions");
-					Text tmp2 = (Text) r.getProperty("instructions");
+					Text tmp2 = (Text) recipes.get(i).getProperty("instructions");
 					String itemInstruct = tmp2.getValue();
 					instruct.appendChild(doc.createTextNode(itemInstruct));
 					item.appendChild(instruct);
@@ -116,20 +110,14 @@ public class GetRecipes extends HttpServlet {
 					// image node
 					// getting an image byte stream and encoding it into a
 					// string able to be stored in XML
-					BlobKey blobKey = (BlobKey) r.getProperty("image");
+					BlobKey blobKey = (BlobKey) recipes.get(i).getProperty("image");
 					BlobInfo blobInfo = new BlobInfoFactory()
 							.loadBlobInfo(blobKey);
 					byte[] image = blobstoreService.fetchData(blobKey, 0,
 							blobInfo.getSize());
-					String encodedImage = Base64.encodeBase64String(image); // store
-																			// this
-																			// byte
-																			// stream
-																			// within
-																			// the
-																			// xml
-																			// node
-
+					String encodedImage = Base64.encodeBase64String(image);
+								
+					//store bytestream as base64 string in xml node
 					Element respImage = doc.createElement("image");
 					String itemImage = encodedImage;
 					respImage.appendChild(doc.createTextNode(itemImage));
@@ -154,11 +142,12 @@ public class GetRecipes extends HttpServlet {
 			} catch (TransformerException tfe) {
 				tfe.printStackTrace();
 			}
-		//} else {
-			//resp.setContentType("text/xml;charset=UTF-8");
-			//resp.getWriter().println("null");
-		//}
+		} else {
+			resp.setContentType("text/xml;charset=UTF-8");
+			resp.getWriter().println("null");
+		}
 	    
 	}
 
 }
+	
