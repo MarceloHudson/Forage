@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -88,13 +89,25 @@ public class MapServlet extends HttpServlet {
 			String iconType = "";
 			switch ((String) foodTypeEntity.getProperty("type")) {
 			case "Fruit":
+				if(i.getProperty("verified").equals(false)){
+					iconType = "fruit-UV.png";
+					break;
+				}
 				iconType = "red-shadow.png";
 				break;
 			case "Vegetable":
-				iconType = "vege-dropshadow.png";
+				if(i.getProperty("verified").equals(false)){
+					iconType = "vege-UV.png";
+					break;
+				}
+				iconType = "vege-dropshadow1.png";
 				break;
 			case "Herb":
-				iconType = "green-drop-shadow.png";
+				if(i.getProperty("verified").equals(false)){
+					iconType = "herb-UV.png";
+					break;
+				}
+				iconType = "green-dropshadow.png";
 				break;
 			default:
 				iconType = "red-shadow.png";
@@ -104,8 +117,14 @@ public class MapServlet extends HttpServlet {
 				visible = "true";
 			}
 			String description = (String) i.getProperty("description");
+			String newDescription = (String) i.getProperty("description");
+			Scanner scan = new Scanner(description);
+			scan.useDelimiter("[\\s\\s]+[\\n]+");
+			while(scan.hasNext()){
+			newDescription = scan.next();
+			}
 			markers += "placeMarker(" + lat + ", " + lon + ", \"<p1>" + title
-					+ "</p1><br><br>" + description + "<br><br>Health: "
+					+ "</p1><br><br>" + newDescription + "<br><br>Health: "
 					+ health + "/10\"," + visible + ",\"" + iconType + "\");";
 		}
 		try {
@@ -114,7 +133,6 @@ public class MapServlet extends HttpServlet {
 			String path = s.getRealPath("mapcode.txt");
 			reader = new BufferedReader(new InputStreamReader(
 					new FileInputStream(path), "UTF8"));
-
 			maps = reader.readLine();
 			maps += markers;
 			maps += reader.readLine();
