@@ -16,8 +16,8 @@ body {
 #map-canvas {
 	height: 100%;
 	z-index: 10;
-	background: #2b2b2b url('info_Gif.gif') no-repeat 320px 380px;
-	background-size: 320px  380px;
+	background: #2b2b2b url('info_Gif.gif') no-repeat;
+	background-size: 320px  420px;
 }
 
 #cover {
@@ -561,12 +561,17 @@ option {
 		descriptionInfo = desc.value;
 		var health = document.getElementById("healthType");
 		healthInfo = health.options[health.selectedIndex].text;
+		if(healthInfo == "Health"){
+			window.alert("Please choose a value for health");
+		}
+		else{
 		var type = document.getElementById("foodType");
 		foodTypeInfo = type.options[type.selectedIndex].text;
 		var foods = document.getElementById("foodItemType");
 		foodItemInfo = foods.options[foods.selectedIndex].text;
 		map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
 		addLocationMap = true;
+		}
 	}
 
 	/*
