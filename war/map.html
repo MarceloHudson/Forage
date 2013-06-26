@@ -548,7 +548,8 @@ option {
 		if (foodTypeInfo == "Herb") {
 			iconType = "herb-UV.png";
 		}
-		//if(foodItemType == )
+
+		
 		placeMarker(position.lat(), position.lng(), xmlHttp.responseText, true,
 				iconType);
 		addLocationMap = false;
@@ -561,14 +562,20 @@ option {
 		descriptionInfo = desc.value;
 		var health = document.getElementById("healthType");
 		healthInfo = health.options[health.selectedIndex].text;
-		if(healthInfo == "Health"){
-			window.alert("Please choose a value for health");
-		}
-		else{
 		var type = document.getElementById("foodType");
 		foodTypeInfo = type.options[type.selectedIndex].text;
 		var foods = document.getElementById("foodItemType");
 		foodItemInfo = foods.options[foods.selectedIndex].text;
+		if(foodItemInfo == "Food Item"){
+			window.alert("Please choose a food item");
+		}
+		else if(descriptionInfo == ""){
+			window.alert("Please enter a description");
+		}
+		else if(healthInfo == "Health"){
+			window.alert("Please choose a value for health");
+		}
+		else{
 		map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
 		addLocationMap = true;
 		}
